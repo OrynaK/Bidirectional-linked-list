@@ -79,7 +79,7 @@ public class Fabric implements Serializable, Comparable<Fabric>{
 
     @Override
     public String toString() {
-        return "\nFabric{" +
+        return "Fabric{" +
                 "fabricNumber=" + fabricNumber + '\'' +
                 ", name='" + fabricName +
                 ", width=" + fabricWidth +

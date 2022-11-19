@@ -38,27 +38,33 @@ public class FabricListImp implements FabricList {
 
     @Override
     public Object toArray() {
-        return new Fabric[0];
+        Fabric[] objects = new Fabric[size];
+        int index=0;
+        Node curr=head;
+        while(curr!=null){
+            objects[index]=curr.data;
+            index++;
+            curr=curr.next;
+        }
+        return objects;
     }
 
-//    @Override
-//    public String toString() {
-//        String result = "{";
-//        int index = 1;
-//        Node current = head;
-//        while (current != null){
-//            result += "[the result of the invocation toString on the element " + index + "]";
-//
-//            index++;
-//            current = current.next;
-//
-//            if (current != null){
-//                result += ",";
-//            }
-//        }
-//        result += "}";
-//        return result;
-//    }
+    @Override
+    public String toString() {
+        StringBuilder res = new StringBuilder("{");
+        int index = 1;
+        Node curr = head;
+        while (curr != null) {
+            res.append("[the result of the invocation toString on the element ").append(index).append("]");
+            curr = curr.next;
+            index++;
+            if (curr != null) {
+                res.append(",");
+            }
+        }
+        res.append("}");
+        return res.toString();
+    }
 
     @Override
     public void addFirst(Fabric element) {
@@ -86,7 +92,7 @@ public class FabricListImp implements FabricList {
 
     @Override
     public boolean removeFirst() {
-        if (head == null) throw new NoSuchElementException();
+        if (head == null) throw new NoSuchElementException("There are no elements in the list");
         if (head != tail) {
             head = head.next;
             head.prev = null;
@@ -99,7 +105,7 @@ public class FabricListImp implements FabricList {
 
     @Override
     public boolean removeLast() {
-        if (head == null) throw new NoSuchElementException();
+        if (head == null) throw new NoSuchElementException("There are no elements in the list");
         if (head != tail) {
             tail = tail.prev;
             tail.next = null;
@@ -112,19 +118,19 @@ public class FabricListImp implements FabricList {
 
     @Override
     public Fabric getFirst() {
-        if (head == null) throw new NoSuchElementException();
+        if (head == null) throw new NoSuchElementException("There are no elements in the list");
         return head.data;
     }
 
     @Override
     public Fabric getLast() {
-        if (head == null) throw new NoSuchElementException();
+        if (head == null) throw new NoSuchElementException("There are no elements in the list");
         return tail.data;
     }
 
     @Override
     public Fabric get(Fabric element) {
-        if (head == null) throw new NoSuchElementException();
+        if (head == null) throw new NoSuchElementException("There are no elements in the list");
         Node curr = head;
         while (curr != null) {
             if (curr.data.equals(element)) {
@@ -137,7 +143,7 @@ public class FabricListImp implements FabricList {
 
     @Override
     public boolean remove(Fabric element) {
-        if (head == null) throw new NoSuchElementException();
+        if (head == null) throw new NoSuchElementException("There are no elements in the list");
         Node curr = head;
         while (curr != null) {
             if (curr.data.equals(element)) {
@@ -168,10 +174,11 @@ public class FabricListImp implements FabricList {
     public Iterator<Fabric> iterator() {
         Iterator<Fabric> it = new Iterator<Fabric>() {
             private Node curr = head;
+            private boolean canRemove = false;
 
             @Override
             public boolean hasNext() {
-                return curr.next != null;
+                return curr != null;
             }
 
             @Override
@@ -179,6 +186,7 @@ public class FabricListImp implements FabricList {
                 if (hasNext()) {
                     Fabric data = curr.data;
                     curr = curr.next;
+                    canRemove = true;
                     return data;
                 }
                 throw new NoSuchElementException();
@@ -186,7 +194,26 @@ public class FabricListImp implements FabricList {
 
             @Override
             public void remove() {
+                if (canRemove) {
+                    Node temp = curr == null ? null : curr.prev;
 
+                    if (temp != null) {
+                        if (temp.next != null)
+                            temp.next.prev = temp.prev;
+                        else
+                            temp = temp.prev;
+
+
+                        if (temp.prev != null)
+                            temp.prev.next = temp.next;
+                        else
+                            head = temp.next;
+                        size--;
+                    }
+                    canRemove = false;
+                    return;
+                }
+                throw new IllegalStateException("Incorrect using method");
             }
         };
         return it;
