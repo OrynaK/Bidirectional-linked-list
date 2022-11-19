@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import ua.nure.cpp.kasapova.practice3.entity.Fabric;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 public class FabricListImp implements FabricList {
@@ -39,12 +40,15 @@ public class FabricListImp implements FabricList {
     @Override
     public Object toArray() {
         Fabric[] objects = new Fabric[size];
-        int index=0;
-        Node curr=head;
-        while(curr!=null){
-            objects[index]=curr.data;
+        int index = 0;
+        Node curr = head;
+        while (curr != null) {
+            if (index != size) {
+                objects[index] = curr.data;
+            }
+            curr = curr.next;
             index++;
-            curr=curr.next;
+
         }
         return objects;
     }
@@ -132,9 +136,11 @@ public class FabricListImp implements FabricList {
     public Fabric get(Fabric element) {
         if (head == null) throw new NoSuchElementException("There are no elements in the list");
         Node curr = head;
-        while (curr != null) {
-            if (curr.data.equals(element)) {
-                return curr.data;
+        while (curr != tail.next) {
+            if (curr.data != null) {
+                if (curr.data.equals(element)) {
+                    return curr.data;
+                }
             }
             curr = curr.next;
         }
@@ -145,12 +151,24 @@ public class FabricListImp implements FabricList {
     public boolean remove(Fabric element) {
         if (head == null) throw new NoSuchElementException("There are no elements in the list");
         Node curr = head;
+        Node temp;
         while (curr != null) {
-            if (curr.data.equals(element)) {
-                break;
+            if(element!=null) {
+                if (curr.data != null) {
+                    if (curr.data.equals(element)) {
+                        break;
+                    }
+                }
+                curr = curr.next;
+            }else {
+                if(curr.data==null) {
+                   break;
+                }
+                curr = curr.next;
             }
-            curr = curr.next;
+
         }
+
         if (curr != null) {
             if (curr.next != null)
                 curr.next.prev = curr.prev;
@@ -208,8 +226,9 @@ public class FabricListImp implements FabricList {
                             temp.prev.next = temp.next;
                         else
                             head = temp.next;
-                        size--;
+
                     }
+                    size--;
                     canRemove = false;
                     return;
                 }

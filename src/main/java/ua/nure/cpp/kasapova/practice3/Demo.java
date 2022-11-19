@@ -18,9 +18,9 @@ public class Demo {
         Fabric fabric2 = new Fabric("eco-leather", 9, new BigDecimal(3), new BigDecimal(300));
         Fabric fabric3 = new Fabric("velveteen", 1, new BigDecimal(5), new BigDecimal(230));
         list.addFirst(fabric);
-        list.addFirst(fabric1);
+        list.addFirst(null);
+        list.addLast(null);
         list.addLast(fabric2);
-        list.addLast(fabric3);
 
         System.out.println("\n--------------------------The original list--------------------------");
         for (Fabric fab:list) {
@@ -40,12 +40,11 @@ public class Demo {
         try {
             System.out.println("The first element of the list: " + list.getFirst());
             System.out.println("The last element of the list: " + list.getLast());
-            System.out.println("Find an existing item: " + list.get(fabric2));
-            System.out.println("Find not an existing item: " + list.get(fabric1));
-            System.out.println("Remove an existing item: " + list.remove(fabric2));
-            System.out.println("Remove not an existing item: " + list.remove(fabric1));
+            System.out.println("Find an item: " + list.get(fabric));
+            System.out.println("Remove item: " + list.remove(null));
+
         }
-        catch (NoSuchFieldError e){
+        catch (NoSuchElementException e){
             System.err.println("Exception " + e.getMessage());
         }
         System.out.println("----Result of removing: ");
@@ -60,7 +59,7 @@ public class Demo {
 
         System.out.println("\n-------------------------Testing the iterator------------------------");
         list.addFirst(fabric);
-        list.addFirst(fabric1);
+        list.addFirst(null);
         list.addLast(fabric2);
         list.addLast(fabric3);
         for (Fabric obj : list) {
