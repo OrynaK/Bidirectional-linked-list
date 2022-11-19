@@ -4,7 +4,6 @@ import org.jetbrains.annotations.NotNull;
 import ua.nure.cpp.kasapova.practice3.entity.Fabric;
 
 import java.util.Iterator;
-import java.util.List;
 import java.util.NoSuchElementException;
 
 public class FabricListImp implements FabricList {
@@ -151,21 +150,15 @@ public class FabricListImp implements FabricList {
     public boolean remove(Fabric element) {
         if (head == null) throw new NoSuchElementException("There are no elements in the list");
         Node curr = head;
-        Node temp;
         while (curr != null) {
-            if(element!=null) {
-                if (curr.data != null) {
-                    if (curr.data.equals(element)) {
-                        break;
-                    }
+            if (element != null) {
+                if (curr.data != null && curr.data.equals(element)) {
+                    break;
                 }
-                curr = curr.next;
-            }else {
-                if(curr.data==null) {
-                   break;
-                }
-                curr = curr.next;
+            } else if (curr.data == null) {
+                break;
             }
+            curr = curr.next;
 
         }
 
