@@ -45,32 +45,12 @@ public class Product extends ClothingModel {
                    BigDecimal pricePerMetre, int modelNumber, BigDecimal consumption,
                    BigDecimal tailoringPrice, String size) {
         super(name, fabricNumber, width, pricePerMetre, modelNumber, consumption, tailoringPrice);
-        switch (size) {
-            case ("XXS") -> this.productSize = Size.XXS;
-            case ("XS") -> this.productSize = Size.XS;
-            case ("S") -> this.productSize = Size.S;
-            case ("M") -> this.productSize = Size.M;
-            case ("L") -> this.productSize = Size.L;
-            case ("XL") -> this.productSize = Size.XL;
-            case ("XXL") -> this.productSize = Size.XXL;
-            case ("XXXL") -> this.productSize = Size.XXXL;
-            default -> this.productSize = Size.FREESIZE;
-        }
+        this.productSize=Size.valueOf(size);
         numberOfProducts++;
     }
 
     public void setProductSize(String productSize) {
-        switch (productSize) {
-            case ("XXS") -> this.productSize = Size.XXS;
-            case ("XS") -> this.productSize = Size.XS;
-            case ("S") -> this.productSize = Size.S;
-            case ("M") -> this.productSize = Size.M;
-            case ("L") -> this.productSize = Size.L;
-            case ("XL") -> this.productSize = Size.XL;
-            case ("XXL") -> this.productSize = Size.XXL;
-            case ("XXXL") -> this.productSize = Size.XXXL;
-            default -> this.productSize = Size.FREESIZE;
-        }
+        this.productSize=Size.valueOf(productSize);
     }
 
     public Size getProductSize() {
@@ -82,30 +62,8 @@ public class Product extends ClothingModel {
     }
 
     public int isGreaterThan(Object other) {
-        int num1;
-        switch (this.getStringProductSize()) {
-            case ("XXS") -> num1 = 1;
-            case ("XS") -> num1 = 2;
-            case ("S") -> num1 = 3;
-            case ("M") -> num1 = 4;
-            case ("L") -> num1 = 5;
-            case ("XL") -> num1 = 6;
-            case ("XXL") -> num1 = 7;
-            case ("XXXL") -> num1 = 8;
-            default -> num1 = 0;
-        }
-        int num2;
-        switch (((Product) other).getStringProductSize()) {
-            case ("XXS") -> num2 = 1;
-            case ("XS") -> num2 = 2;
-            case ("S") -> num2 = 3;
-            case ("M") -> num2 = 4;
-            case ("L") -> num2 = 5;
-            case ("XL") -> num2 = 6;
-            case ("XXL") -> num2 = 7;
-            case ("XXXL") -> num2 = 8;
-            default -> num2 = 0;
-        }
+        int num1= this.productSize.ordinal();
+        int num2=((Product)other).productSize.ordinal();
         if (num1 == num2) return 0;
         return num1 > num2 ? 1 : -1;
     }
